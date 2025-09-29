@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:yure_kyc_light/models/kyc_result.dart';
+import 'package:yure_kyc_light/src/models/kyc_result.dart';
 
 void main() {
   test('OCR parsing simple', () {
