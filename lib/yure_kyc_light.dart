@@ -5,3 +5,4 @@ export 'src/services/ocr_service.dart';
 export 'src/services/face_service.dart';
 export 'src/yure_kyc.dart';
 export 'src/widgets/kyc_widget.dart';
+export 'src/models/scan_resultat_model.dart';

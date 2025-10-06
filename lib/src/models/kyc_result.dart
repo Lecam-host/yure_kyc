@@ -6,6 +6,7 @@ class KycResult {
   final DateTime? dob;
   final String? facePhotoPath;
   final String? rawText;
+  final String? alltext;
   final KycStatus status;
 
   KycResult({
@@ -14,6 +15,7 @@ class KycResult {
     this.dob,
     this.facePhotoPath,
     this.rawText,
+    this.alltext,
     this.status = KycStatus.pending,
   });
 
@@ -24,5 +26,6 @@ class KycResult {
     "facePhoto": facePhotoPath,
     "rawText": rawText,
     "status": status.name,
+    "alltext": alltext,
   };
 }
