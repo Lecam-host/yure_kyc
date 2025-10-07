@@ -23,7 +23,8 @@ class ScanResultatModel {
   ScanObjet? documentClassCode;
   ScanObjet? nameEtatDeDelivrance;
   ScanObjet? issuingStateCode;
-  Uint8List? facePhotoPath;
+  String? facePhotoPath;
+  Uint8List? signature;
 
   ScanResultatModel({
     this.nom,

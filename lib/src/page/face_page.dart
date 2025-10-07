@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:yure_kyc_light/src/enum/step_enum.dart';
+import 'package:yure_kyc_light/src/page/result_page.dart';
 import 'package:yure_kyc_light/yure_kyc_light.dart';
 
 class FacePage extends StatefulWidget {
@@ -57,11 +59,12 @@ class _FacePageState extends State<FacePage> {
       await _cameraController.stopImageStream();
       final picture = await _cameraController.takePicture();
       if (!mounted) return;
-
+      ScanResultatModel scanResul = widget.scanResultat;
+      scanResul.facePhotoPath = picture.path;
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => ResultPreviewPage(imagePath: picture.path),
+          builder: (_) => ResultPreviewPage(scanResultat: scanResul),
         ),
       );
     }
@@ -111,14 +114,38 @@ class _FacePageState extends State<FacePage> {
 }
 
 class ResultPreviewPage extends StatelessWidget {
-  final String imagePath;
-  const ResultPreviewPage({super.key, required this.imagePath});
+  final ScanResultatModel scanResultat;
+  const ResultPreviewPage({super.key, required this.scanResultat});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Résultat")),
-      body: Center(child: Image.file(File(imagePath))),
+      appBar: AppBar(title: const Text("Votre selfie")),
+      body: Column(
+        children: [
+          Center(child: Image.file(File(scanResultat.facePhotoPath!))),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text("Reprendre"),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => ResultPage(
+                    scanResultatModel: scanResultat,
+                    step: StepEnum.face,
+                  ),
+                ),
+              );
+            },
+            child: const Text("Valider"),
+          ),
+        ],
+      ),
     );
   }
 }

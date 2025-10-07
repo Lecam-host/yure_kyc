@@ -20,6 +20,7 @@ dependencies:
   google_mlkit_face_detection: ^0.13.1
   camera: ^0.11.2
   camera_android_camerax: ^0.6.23
+  signature: ^6.3.0
 
   
 

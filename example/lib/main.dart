@@ -4,7 +4,6 @@ import 'package:yure_kyc_light/yure_kyc_light.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   OcrService ocrService = OcrService();
-  FaceService faceService = FaceService();
   //await faceService.init();
   await ocrService.init();
   runApp(const MyApp());
@@ -89,7 +88,7 @@ class _ScanResultatState extends State<ScanResultat> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Resultat")),
+      appBar: AppBar(title: Text("Resultat final")),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(

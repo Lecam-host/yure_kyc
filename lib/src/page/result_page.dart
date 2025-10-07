@@ -1,88 +1,141 @@
+import 'dart:io' as io;
 import 'package:flutter/material.dart';
+import 'package:flutter_document_reader_api/flutter_document_reader_api.dart';
+import 'package:yure_kyc_light/src/enum/step_enum.dart';
 import 'package:yure_kyc_light/src/page/face_page.dart';
+import 'package:yure_kyc_light/src/page/signature_page.dart';
 import 'package:yure_kyc_light/yure_kyc_light.dart';
 
 class ResultPage extends StatefulWidget {
   const ResultPage({
     super.key,
-    this.isFirstPage = false,
-    this.scanResultatModel,
+    required this.step,
+    required this.scanResultatModel,
   });
-  final ScanResultatModel? scanResultatModel;
 
-  final bool isFirstPage;
+  final ScanResultatModel scanResultatModel;
+  final StepEnum step;
 
   @override
   State<ResultPage> createState() => _ResultPageState();
 }
 
 class _ResultPageState extends State<ResultPage> {
+  late ScanResultatModel _model;
+  late StepEnum _step;
+
+  @override
+  void initState() {
+    super.initState();
+    _model = widget.scanResultatModel;
+    _step = widget.step;
+  }
+
+  Future<void> _scanNextSide(StepEnum nextStep) async {
+    final ocrService = OcrService();
+    Results? results = await ocrService.scan(nextStep);
+
+    if (results == null) return;
+    final convertResult = await ocrService.convertScanResultInScanResultatModel(
+      results,
+    );
+
+    setState(() {
+      _model.merge(convertResult);
+      _step = nextStep;
+    });
+
+    // Re-affiche la page mise à jour
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ResultPage(scanResultatModel: _model, step: nextStep),
+      ),
+    );
+  }
+
+  void _goToNextStep() {
+    switch (_step) {
+      case StepEnum.recto:
+        _scanNextSide(StepEnum.verso);
+        break;
+      case StepEnum.verso:
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => FacePage(scanResultat: _model)),
+        );
+        break;
+      case StepEnum.face:
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) => SignaturePage(scanResultat: _model),
+          ),
+        );
+        break;
+      case StepEnum.sign:
+        Navigator.pop(
+          context,
+          _model,
+        ); // ✅ renvoie le résultat final au KycWidget
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Resultat")),
-      body: widget.isFirstPage && widget.scanResultatModel?.photo == null
-          ? Column(
-              children: [
-                Text('Cette face n\'est pas conforme'),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text("Reprendre"),
-                ),
-              ],
-            )
-          : SingleChildScrollView(
-              child: Column(
-                children: [
-                  if (widget.scanResultatModel?.facePhotoPath != null)
-                    Image.memory(
-                      widget.scanResultatModel!.facePhotoPath!,
-                      height: 200,
-                      width: 200,
-                    ),
-                  if (widget.scanResultatModel?.photo != null)
-                    Image.memory(
-                      widget.scanResultatModel!.photo!,
-                      height: 200,
-                      width: 200,
-                    ),
-                  if (widget.scanResultatModel?.docImage != null)
-                    Image.memory(
-                      widget.scanResultatModel!.docImage!,
-                      height: 200,
-                      width: 200,
-                    ),
-                  Text("Nom : ${widget.scanResultatModel?.nom?.value}"),
-                  Text("Prenom : ${widget.scanResultatModel?.prenom?.value}"),
-                  Text(
-                    "Date de naissance : ${widget.scanResultatModel?.birthdate?.value}",
-                  ),
-                  Text(
-                    "Lieu de naissance : ${widget.scanResultatModel?.lieuNaissance?.value}",
-                  ),
-                  Text("Sexe : ${widget.scanResultatModel?.sex?.value}"),
-                  Text(
-                    "Nationalite : ${widget.scanResultatModel?.nationality?.value}",
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      if (widget.scanResultatModel == null) {
-                        return;
-                      }
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              FacePage(scanResultat: widget.scanResultatModel!),
-                        ),
-                      );
-                    },
-                    child: const Text("Continuer"),
-                  ),
-                ],
+      appBar: AppBar(title: const Text("Résultat du KYC")),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            if (_model.facePhotoPath != null)
+              Image.file(io.File(_model.facePhotoPath!), height: 200),
+            if (_model.photo != null)
+              Image.memory(_model.photo!, height: 200, width: 200),
+            if (_model.docImage != null)
+              Image.memory(_model.docImage!, height: 200, width: 200),
+            const SizedBox(height: 16),
+            Text("Nom : ${_model.nom?.value ?? ''}"),
+            Text("Prénom : ${_model.prenom?.value ?? ''}"),
+            Text("Date de naissance : ${_model.birthdate?.value ?? ''}"),
+            Text("Lieu de naissance : ${_model.lieuNaissance?.value ?? ''}"),
+            Text("Sexe : ${_model.sex?.value ?? ''}"),
+            Text("Nationalité : ${_model.nationality?.value ?? ''}"),
+            const SizedBox(height: 32),
+
+            // 🔹 Boutons selon l’étape actuelle
+            if (_step == StepEnum.recto) ...[
+              ElevatedButton(
+                onPressed: () => _scanNextSide(StepEnum.verso),
+                child: const Text("Scanner la face verso"),
               ),
-            ),
+              TextButton(
+                onPressed: () => _goToNextStep(),
+                child: const Text("Passer au selfie"),
+              ),
+            ] else if (_step == StepEnum.verso) ...[
+              ElevatedButton(
+                onPressed: () => _goToNextStep(),
+                child: const Text("Passer au selfie"),
+              ),
+            ] else if (_step == StepEnum.face) ...[
+              ElevatedButton(
+                onPressed: () => _goToNextStep(),
+                child: const Text("Continuer vers la signature"),
+              ),
+            ] else if (_step == StepEnum.sign) ...[
+              ElevatedButton(
+                onPressed: _goToNextStep,
+                child: const Text("Terminer le KYC"),
+              ),
+            ],
+          ],
+        ),
+      ),
     );
   }
 }

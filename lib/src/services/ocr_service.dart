@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter/services.dart';
 import 'package:flutter_document_reader_api/flutter_document_reader_api.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:yure_kyc_light/src/enum/step_enum.dart';
 import 'package:yure_kyc_light/src/models/scan_resultat_model.dart';
 
 var documentReader = DocumentReader.instance;
@@ -35,7 +36,7 @@ class OcrService {
     // setStatus("Ready");
   }
 
-  Future<Results?> scan(bool isFirstFace) async {
+  Future<Results?> scan(StepEnum step) async {
     if (!await documentReader.isReady) return null;
 
     final completer = Completer<Results?>();
