@@ -17,7 +17,10 @@ dependencies:
   intl: ^0.20.2
   flutter_document_reader_api: ^8.3.496
   flutter_document_reader_core_fullrfid: ^8.3.773
-  face_camera: ^0.1.4
+  google_mlkit_face_detection: ^0.13.1
+  camera: ^0.11.2
+  camera_android_camerax: ^0.6.23
+
   
 
 
@@ -33,8 +36,8 @@ dev_dependencies:
 flutter:
 
   # To add assets to your package, add an assets section, like this:
-  # assets:
-  #   - assets/regula/regula.license
+  assets:
+    - assets/regula/regula.license
   #   - assets/regula/db.dat
   # assets:
   #   - images/a_dot_burr.jpeg

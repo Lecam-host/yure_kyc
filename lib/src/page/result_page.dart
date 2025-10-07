@@ -33,53 +33,55 @@ class _ResultPageState extends State<ResultPage> {
                 ),
               ],
             )
-          : Column(
-              children: [
-                if (widget.scanResultatModel?.facePhotoPath != null)
-                  Image.memory(
-                    widget.scanResultatModel!.facePhotoPath!,
-                    height: 200,
-                    width: 200,
+          : SingleChildScrollView(
+              child: Column(
+                children: [
+                  if (widget.scanResultatModel?.facePhotoPath != null)
+                    Image.memory(
+                      widget.scanResultatModel!.facePhotoPath!,
+                      height: 200,
+                      width: 200,
+                    ),
+                  if (widget.scanResultatModel?.photo != null)
+                    Image.memory(
+                      widget.scanResultatModel!.photo!,
+                      height: 200,
+                      width: 200,
+                    ),
+                  if (widget.scanResultatModel?.docImage != null)
+                    Image.memory(
+                      widget.scanResultatModel!.docImage!,
+                      height: 200,
+                      width: 200,
+                    ),
+                  Text("Nom : ${widget.scanResultatModel?.nom?.value}"),
+                  Text("Prenom : ${widget.scanResultatModel?.prenom?.value}"),
+                  Text(
+                    "Date de naissance : ${widget.scanResultatModel?.birthdate?.value}",
                   ),
-                if (widget.scanResultatModel?.photo != null)
-                  Image.memory(
-                    widget.scanResultatModel!.photo!,
-                    height: 200,
-                    width: 200,
+                  Text(
+                    "Lieu de naissance : ${widget.scanResultatModel?.lieuNaissance?.value}",
                   ),
-                if (widget.scanResultatModel?.docImage != null)
-                  Image.memory(
-                    widget.scanResultatModel!.docImage!,
-                    height: 200,
-                    width: 200,
+                  Text("Sexe : ${widget.scanResultatModel?.sex?.value}"),
+                  Text(
+                    "Nationalite : ${widget.scanResultatModel?.nationality?.value}",
                   ),
-                Text("Nom : ${widget.scanResultatModel?.nom?.value}"),
-                Text("Prenom : ${widget.scanResultatModel?.prenom?.value}"),
-                Text(
-                  "Date de naissance : ${widget.scanResultatModel?.birthdate?.value}",
-                ),
-                Text(
-                  "Lieu de naissance : ${widget.scanResultatModel?.lieuNaissance?.value}",
-                ),
-                Text("Sexe : ${widget.scanResultatModel?.sex?.value}"),
-                Text(
-                  "Nationalite : ${widget.scanResultatModel?.nationality?.value}",
-                ),
-                TextButton(
-                  onPressed: () {
-                    if (widget.scanResultatModel == null) {
-                      return;
-                    }
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            FacePage(scanResultat: widget.scanResultatModel!),
-                      ),
-                    );
-                  },
-                  child: const Text("Continuer"),
-                ),
-              ],
+                  TextButton(
+                    onPressed: () {
+                      if (widget.scanResultatModel == null) {
+                        return;
+                      }
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              FacePage(scanResultat: widget.scanResultatModel!),
+                        ),
+                      );
+                    },
+                    child: const Text("Continuer"),
+                  ),
+                ],
+              ),
             ),
     );
   }

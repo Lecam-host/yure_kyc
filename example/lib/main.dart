@@ -4,6 +4,8 @@ import 'package:yure_kyc_light/yure_kyc_light.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   OcrService ocrService = OcrService();
+  FaceService faceService = FaceService();
+  //await faceService.init();
   await ocrService.init();
   runApp(const MyApp());
 }

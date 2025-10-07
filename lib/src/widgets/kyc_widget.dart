@@ -1,6 +1,6 @@
-import 'package:face_camera/face_camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_document_reader_api/flutter_document_reader_api.dart';
+import 'package:yure_kyc_light/src/page/face_page.dart';
 import 'package:yure_kyc_light/src/page/result_page.dart';
 import 'package:yure_kyc_light/yure_kyc_light.dart';
 
@@ -26,7 +26,6 @@ class _KycWidgetState extends State<KycWidget> {
   }
 
   s() async {
-    await FaceCamera.initialize();
     await ocrService.init();
     Results? results = await ocrService.scan(widget.isFirstFace);
 
@@ -43,17 +42,18 @@ class _KycWidgetState extends State<KycWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return CircularProgressIndicator();
-    // Center(
-    //   child: Column(
-    //     children: [
-    //       ElevatedButton(onPressed: () async {}, child: const Text("Scan")),
-    //       ElevatedButton(
-    //         onPressed: ocrService.recognize,
-    //         child: const Text("Recognize"),
-    //       ),
-    //     ],
-    //   ),
-    // );
+    return
+    //FacePage(scanResultat: ScanResultatModel());
+    Center(
+      child: Column(
+        children: [
+          ElevatedButton(onPressed: () async {}, child: const Text("Scan")),
+          ElevatedButton(
+            onPressed: ocrService.recognize,
+            child: const Text("Recognize"),
+          ),
+        ],
+      ),
+    );
   }
 }
