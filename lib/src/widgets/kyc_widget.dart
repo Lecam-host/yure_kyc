@@ -24,7 +24,10 @@ class _KycWidgetState extends State<KycWidget> {
     // await ocrService.init();
     Results? results = await ocrService.scan(StepEnum.recto);
 
-    if (results == null) return;
+    if (results == null) {
+      Navigator.pop(context);
+      return;
+    }
     ScanResultatModel convertResult = await ocrService
         .convertScanResultInScanResultatModel(results);
     // widget.callbackAction(convertResult);

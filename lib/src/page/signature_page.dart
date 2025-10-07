@@ -41,30 +41,36 @@ class _SignaturePageState extends State<SignaturePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Signature")),
-      body: Column(
-        children: [
-          Signature(
-            controller: _controller,
-            width: 300,
-            height: 300,
-            backgroundColor: Colors.black87,
-          ),
-          if (scanResultat.signature != null)
-            TextButton(
-              onPressed: () => Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => ResultPage(
-                    scanResultatModel: scanResultat,
-                    step: StepEnum.sign,
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("Signature"),
+          automaticallyImplyLeading: false,
+        ),
+        body: Column(
+          children: [
+            Signature(
+              controller: _controller,
+              width: 300,
+              height: 300,
+              backgroundColor: Colors.black87,
+            ),
+            if (scanResultat.signature != null)
+              TextButton(
+                onPressed: () => Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => ResultPage(
+                      scanResultatModel: scanResultat,
+                      step: StepEnum.sign,
+                    ),
                   ),
                 ),
+                child: Text("Valider"),
               ),
-              child: Text("Valider"),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }

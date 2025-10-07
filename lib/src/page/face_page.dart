@@ -61,7 +61,7 @@ class _FacePageState extends State<FacePage> {
       if (!mounted) return;
       ScanResultatModel scanResul = widget.scanResultat;
       scanResul.facePhotoPath = picture.path;
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (_) => ResultPreviewPage(scanResultat: scanResul),
@@ -119,32 +119,38 @@ class ResultPreviewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Votre selfie")),
-      body: Column(
-        children: [
-          Center(child: Image.file(File(scanResultat.facePhotoPath!))),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text("Reprendre"),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => ResultPage(
-                    scanResultatModel: scanResultat,
-                    step: StepEnum.face,
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("Votre selfie"),
+          automaticallyImplyLeading: false,
+        ),
+        body: Column(
+          children: [
+            Center(child: Image.file(File(scanResultat.facePhotoPath!))),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text("Reprendre"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => ResultPage(
+                      scanResultatModel: scanResultat,
+                      step: StepEnum.face,
+                    ),
                   ),
-                ),
-              );
-            },
-            child: const Text("Valider"),
-          ),
-        ],
+                );
+              },
+              child: const Text("Valider"),
+            ),
+          ],
+        ),
       ),
     );
   }
