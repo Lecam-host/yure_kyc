@@ -1,6 +1,6 @@
 🪪 Yure KYC Light
 🔍 Description
-
+.
 Yure KYC Light est une application Flutter légère et modulaire permettant d’effectuer la vérification d’identité (KYC) de manière rapide, fiable et conforme.
 Elle s’appuie sur le SDK Regula Document Reader pour la lecture automatique des pièces d’identité (CNI, passeport, permis, etc.) et intègre une capture selfie, signature électronique et extraction automatique des informations personnelles.
 
