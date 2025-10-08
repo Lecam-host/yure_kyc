@@ -122,26 +122,3 @@ test('OCR Service init', () async {
   expect(initialized, true);
 });
 
-🔒 Sécurité & conformité
-
-Yure KYC Light respecte les bonnes pratiques de :
-
-RGPD (protection des données personnelles)
-
-Stockage temporaire local sécurisé
-
-Transmission chiffrée via HTTPS (lors d’envoi à un serveur externe)
-
-🧑‍💻 Auteur
-
-Développé par Papa Kedja Jean Lecam
-Flutter Developer – Mobisoft Côte d’Ivoire
-📧 [contact@mobisoft.ci
-]
-🌍 LinkedIn
-
-📄 Licence
-
-Ce projet est distribué sous la licence MIT.
-Consultez le fichier LICENSE
- pour plus de détails.
