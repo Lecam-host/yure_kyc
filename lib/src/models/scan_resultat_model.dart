@@ -6,7 +6,8 @@ class ScanResultatModel {
   ScanObjet? birthdate;
   ScanObjet? nationality;
   Uint8List? photo;
-  Uint8List? docImage;
+  Uint8List? docRectoImage;
+  Uint8List? docVersoImage;
   ScanObjet? sex;
   ScanObjet? numerodoc;
   ScanObjet? taille;
@@ -34,7 +35,7 @@ class ScanResultatModel {
     this.birthdate,
     this.nationality,
     this.photo,
-    this.docImage,
+    this.docRectoImage,
     this.sex,
     this.numerodoc,
     this.taille,
@@ -43,6 +44,7 @@ class ScanResultatModel {
     this.typePiece,
     this.profession,
     this.nni,
+    this.docVersoImage,
     this.dateEmission,
     this.issuingStateCode,
     this.nameEtatDeDelivrance,
@@ -56,7 +58,7 @@ class ScanResultatModel {
       birthdate: birthdate ?? other.birthdate,
       nationality: nationality ?? other.nationality,
       photo: photo ?? other.photo,
-      docImage: docImage ?? other.docImage,
+      docRectoImage: docRectoImage ?? other.docRectoImage,
       sex: sex ?? other.sex,
       numerodoc: numerodoc ?? other.numerodoc,
       taille: taille ?? other.taille,
@@ -71,6 +73,7 @@ class ScanResultatModel {
       issuingAuthority: issuingAuthority ?? other.issuingAuthority,
       issuingPlace: issuingPlace ?? other.issuingPlace,
       facePhotoPath: facePhotoPath ?? other.facePhotoPath,
+      docVersoImage: docVersoImage ?? other.docVersoImage,
     );
   }
 }

@@ -47,6 +47,7 @@ class OcrService {
       DocReaderException? error,
     ) async {
       if (action.stopped() && !shouldRfid(r)) {
+        inspect(r);
         completer.complete(r); // on complète quand c'est fini
       }
 
@@ -129,7 +130,7 @@ class OcrService {
         r,
       ),
       photo: await r.graphicFieldImageByType(GraphicFieldType.PORTRAIT),
-      docImage: await r.graphicFieldImageByType(
+      docRectoImage: await r.graphicFieldImageByType(
         GraphicFieldType.DOCUMENT_IMAGE,
       ),
       sex: await getValueWithFieldType('Sexe', FieldType.SEX, r),
